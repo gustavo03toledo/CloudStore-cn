@@ -1,0 +1,17 @@
+{
+  "name": "ecommerce-azure",
+  "version": "1.0.0",
+  "description": "E-commerce integrado com Microsoft Azure (Table Storage + Blob Storage)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@azure/data-tables": "^13.2.2",
+    "@azure/storage-blob": "^12.17.0",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^9.0.0"
+  }
+}

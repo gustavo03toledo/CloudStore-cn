@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Área do Cliente – Visualize os seus pedidos e edite os seus dados." />
+  <title>CloudStore – Minha Conta</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- ═══ Navbar ═══ -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">Cloud<span>Store</span></a>
+      <ul class="nav-links">
+        <li><a href="/">🛒 Loja</a></li>
+        <li><a href="/admin.html">⚙️ Admin</a></li>
+        <li><a href="/cliente.html" class="active">👤 Minha Conta</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" style="padding-top:32px; padding-bottom:40px;">
+    <!-- ═══ Login / Identify ═══ -->
+    <div id="login-section">
+      <div class="card" style="max-width:480px; margin:40px auto;">
+        <h2 style="margin-bottom:16px;">👤 Aceder à Minha Conta</h2>
+        <p class="text-muted mb-2">Introduza o seu e-mail para ver os seus dados e histórico de pedidos.</p>
+        <form onsubmit="identificarCliente(event)">
+          <div class="form-group">
+            <label for="login-email">E-mail</label>
+            <input type="email" id="login-email" class="form-control" required placeholder="seu@email.com" />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ═══ Client Dashboard (hidden initially) ═══ -->
+    <div id="dashboard-section" class="hidden">
+      <div class="section-header">
+        <h2>👤 Olá, <span id="client-name">—</span>!</h2>
+        <button class="btn btn-outline btn-sm" onclick="logout()">Sair</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" onclick="mudarTabCliente('dados', this)">📝 Meus Dados</button>
+        <button class="tab" onclick="mudarTabCliente('pedidos', this)">📋 Meus Pedidos</button>
+      </div>
+
+      <!-- Tab: Dados pessoais -->
+      <div id="tab-dados" class="tab-content active">
+        <div class="card" style="max-width:550px;">
+          <h3 style="margin-bottom:16px;">Editar Dados Pessoais</h3>
+          <form id="form-editar-dados" onsubmit="atualizarDados(event)">
+            <input type="hidden" id="ed-pk" />
+            <input type="hidden" id="ed-rk" />
+            <div class="form-group">
+              <label for="ed-nome">Nome</label>
+              <input type="text" id="ed-nome" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label>E-mail</label>
+              <input type="email" id="ed-email" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+              <label for="ed-telefone">Telefone</label>
+              <input type="text" id="ed-telefone" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="ed-endereco">Endereço</label>
+              <input type="text" id="ed-endereco" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="ed-ra">RA</label>
+              <input type="text" id="ed-ra" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">💾 Guardar Alterações</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Tab: Pedidos -->
+      <div id="tab-pedidos" class="tab-content">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID Pedido</th>
+                <th>Itens</th>
+                <th>Total</th>
+                <th>Pagamento</th>
+                <th>Entrega</th>
+                <th>Status</th>
+                <th>Data</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-meus-pedidos">
+              <tr><td colspan="7" class="text-center text-muted">Nenhum pedido encontrado.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Toast Container ═══ -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/js/cliente.js"></script>
+</body>
+</html>

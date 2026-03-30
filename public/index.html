@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Loja E-commerce integrada com Microsoft Azure – Produtos, Checkout e muito mais." />
+  <title>CloudStore – E-commerce Azure</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- ═══ Navbar ═══ -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">Cloud<span>Store</span></a>
+      <ul class="nav-links">
+        <li><a href="/" class="active">🛒 Loja</a></li>
+        <li><a href="/admin.html">⚙️ Admin</a></li>
+        <li><a href="/cliente.html">👤 Minha Conta</a></li>
+        <li><a href="#" id="btn-cart-toggle" onclick="toggleCart()">🛍️ Carrinho (<span id="cart-count">0</span>)</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══ Hero ═══ -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>Bem-vindo à CloudStore</h1>
+      <p>Produtos incríveis armazenados na ☁️ Azure Cloud</p>
+    </div>
+  </section>
+
+  <!-- ═══ Search / Filters ═══ -->
+  <section class="container mb-3">
+    <div class="search-bar">
+      <input type="text" id="search-marca" class="form-control" placeholder="🔍 Filtrar por marca..." />
+      <button class="btn btn-primary" onclick="carregarProdutos()">Buscar</button>
+      <button class="btn btn-outline" onclick="document.getElementById('search-marca').value=''; carregarProdutos()">Limpar</button>
+    </div>
+  </section>
+
+  <!-- ═══ Products Grid ═══ -->
+  <main class="container mb-3">
+    <div id="products-grid" class="grid grid-4">
+      <!-- Produtos carregados via JS -->
+      <div class="empty-state" id="loading-state">
+        <div class="icon">⏳</div>
+        <p>A carregar produtos...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══ Cart Sidebar ═══ -->
+  <aside class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h3>🛍️ Carrinho</h3>
+      <button class="modal-close" onclick="toggleCart()">&times;</button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <div class="empty-state">
+        <div class="icon">🛒</div>
+        <p>O carrinho está vazio</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cart-total">R$ 0,00</span>
+      </div>
+      <button class="btn btn-success btn-block" onclick="abrirCheckout()">Finalizar Compra</button>
+    </div>
+  </aside>
+
+  <!-- ═══ Checkout Modal ═══ -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>💳 Finalizar Pedido</h2>
+        <button class="modal-close" onclick="fecharCheckout()">&times;</button>
+      </div>
+      <form id="checkout-form" onsubmit="realizarCheckout(event)">
+        <div class="form-group">
+          <label for="ck-nome">Nome completo</label>
+          <input type="text" id="ck-nome" class="form-control" required placeholder="Seu nome" />
+        </div>
+        <div class="form-group">
+          <label for="ck-email">E-mail</label>
+          <input type="email" id="ck-email" class="form-control" required placeholder="seu@email.com" />
+        </div>
+
+        <div class="checkout-section">
+          <h3>Método de Pagamento</h3>
+          <div class="payment-methods">
+            <label><input type="radio" name="pagamento" value="Cartão de Crédito" checked /> Cartão de Crédito</label>
+            <label><input type="radio" name="pagamento" value="Boleto" /> Boleto</label>
+            <label><input type="radio" name="pagamento" value="PIX" /> PIX</label>
+          </div>
+        </div>
+
+        <div class="checkout-section">
+          <h3>Método de Entrega</h3>
+          <div class="delivery-methods">
+            <label><input type="radio" name="entrega" value="Entrega Padrão" checked /> Entrega Padrão</label>
+            <label><input type="radio" name="entrega" value="Expressa" /> Expressa</label>
+            <label><input type="radio" name="entrega" value="Retirada" /> Retirada na Loja</label>
+          </div>
+        </div>
+
+        <div class="cart-total mt-2">
+          <span>Total:</span>
+          <span id="checkout-total">R$ 0,00</span>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block mt-2">✅ Confirmar Pedido</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══ Toast Container ═══ -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

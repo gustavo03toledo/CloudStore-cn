@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Painel de Administração – Gestão de Produtos, Clientes e Pedidos" />
+  <title>CloudStore – Painel Admin</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- ═══ Navbar ═══ -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">Cloud<span>Store</span> <span style="font-size:0.7em;opacity:0.5">ADMIN</span></a>
+      <ul class="nav-links">
+        <li><a href="/">🛒 Loja</a></li>
+        <li><a href="/admin.html" class="active">⚙️ Admin</a></li>
+        <li><a href="/cliente.html">👤 Minha Conta</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" style="padding-top:24px; padding-bottom:40px;">
+    <!-- ═══ Stats ═══ -->
+    <div class="stats-row" id="stats-row">
+      <div class="stat-card">
+        <div class="stat-value" id="stat-produtos">—</div>
+        <div class="stat-label">Produtos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-clientes">—</div>
+        <div class="stat-label">Clientes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-pedidos">—</div>
+        <div class="stat-label">Pedidos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-receita">—</div>
+        <div class="stat-label">Receita (R$)</div>
+      </div>
+    </div>
+
+    <!-- ═══ Tabs ═══ -->
+    <div class="tabs">
+      <button class="tab active" onclick="mudarTab('produtos', this)">📦 Produtos</button>
+      <button class="tab" onclick="mudarTab('clientes', this)">👥 Clientes</button>
+      <button class="tab" onclick="mudarTab('pedidos', this)">📋 Pedidos</button>
+    </div>
+
+    <!-- ─── Tab: Produtos ─── -->
+    <div id="tab-produtos" class="tab-content active">
+      <div class="section-header">
+        <h2>📦 Gestão de Produtos</h2>
+        <div class="search-bar">
+          <input type="text" id="admin-search-marca" class="form-control" placeholder="Filtrar por marca..." />
+          <button class="btn btn-outline btn-sm" onclick="carregarProdutosAdmin()">Buscar</button>
+          <button class="btn btn-primary btn-sm" onclick="abrirModalProduto()">+ Novo Produto</button>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Valor</th>
+              <th>Qtd</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-produtos">
+            <tr><td colspan="6" class="text-center text-muted">A carregar...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─── Tab: Clientes ─── -->
+    <div id="tab-clientes" class="tab-content">
+      <div class="section-header">
+        <h2>👥 Gestão de Clientes</h2>
+        <button class="btn btn-primary btn-sm" onclick="abrirModalCliente()">+ Novo Cliente</button>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Telefone</th>
+              <th>RA</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-clientes">
+            <tr><td colspan="5" class="text-center text-muted">A carregar...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─── Tab: Pedidos ─── -->
+    <div id="tab-pedidos" class="tab-content">
+      <div class="section-header">
+        <h2>📋 Todos os Pedidos</h2>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Itens</th>
+              <th>Total</th>
+              <th>Pagamento</th>
+              <th>Status</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-pedidos">
+            <tr><td colspan="7" class="text-center text-muted">A carregar...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Modal: Produto ═══ -->
+  <div class="modal-overlay" id="modal-produto">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-produto-titulo">Novo Produto</h2>
+        <button class="modal-close" onclick="fecharModalProduto()">&times;</button>
+      </div>
+      <form id="form-produto" onsubmit="salvarProduto(event)">
+        <input type="hidden" id="prod-edit-pk" />
+        <input type="hidden" id="prod-edit-rk" />
+        <div class="form-group">
+          <label for="prod-marca">Marca</label>
+          <input type="text" id="prod-marca" class="form-control" required placeholder="Ex: Samsung" />
+        </div>
+        <div class="form-group">
+          <label for="prod-modelo">Modelo</label>
+          <input type="text" id="prod-modelo" class="form-control" required placeholder="Ex: Galaxy S24" />
+        </div>
+        <div class="form-group">
+          <label for="prod-valor">Valor (R$)</label>
+          <input type="number" id="prod-valor" class="form-control" step="0.01" min="0" required placeholder="0.00" />
+        </div>
+        <div class="form-group">
+          <label for="prod-quantidade">Quantidade em stock</label>
+          <input type="number" id="prod-quantidade" class="form-control" min="0" required placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label>Foto do Produto</label>
+          <div class="file-input-wrapper">
+            <div class="file-input-label" id="file-label">📷 Clique para selecionar uma imagem</div>
+            <input type="file" id="prod-foto" accept="image/*" onchange="previewFile(this)" />
+          </div>
+          <img id="foto-preview" src="" alt="" style="display:none; margin-top:10px; max-height:120px; border-radius:8px;" />
+        </div>
+        <button type="submit" class="btn btn-success btn-block mt-2">💾 Guardar Produto</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══ Modal: Cliente ═══ -->
+  <div class="modal-overlay" id="modal-cliente">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-cliente-titulo">Novo Cliente</h2>
+        <button class="modal-close" onclick="fecharModalCliente()">&times;</button>
+      </div>
+      <form id="form-cliente" onsubmit="salvarCliente(event)">
+        <input type="hidden" id="cli-edit-pk" />
+        <input type="hidden" id="cli-edit-rk" />
+        <div class="form-group">
+          <label for="cli-nome">Nome</label>
+          <input type="text" id="cli-nome" class="form-control" required placeholder="Nome completo" />
+        </div>
+        <div class="form-group">
+          <label for="cli-email">E-mail</label>
+          <input type="email" id="cli-email" class="form-control" required placeholder="email@exemplo.com" />
+        </div>
+        <div class="form-group">
+          <label for="cli-telefone">Telefone</label>
+          <input type="text" id="cli-telefone" class="form-control" placeholder="(11) 99999-0000" />
+        </div>
+        <div class="form-group">
+          <label for="cli-endereco">Endereço</label>
+          <input type="text" id="cli-endereco" class="form-control" placeholder="Rua, Nº, Cidade" />
+        </div>
+        <div class="form-group">
+          <label for="cli-ra">RA (Registro Acadêmico)</label>
+          <input type="text" id="cli-ra" class="form-control" placeholder="Opcional" />
+        </div>
+        <button type="submit" class="btn btn-success btn-block mt-2">💾 Guardar Cliente</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══ Toast Container ═══ -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>
