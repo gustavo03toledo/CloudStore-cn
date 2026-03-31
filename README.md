@@ -1,7 +1,7 @@
 # 📘 Documentação do Sistema – CloudStore E-commerce
 
 **Disciplina:** Computação em Nuvem  
-**Aluno:** Toledo  
+**Aluno:** Gustavo Toledo  
 **Data:** 30/03/2026  
 **Prova Prática:** Aplicação E-commerce integrada com Microsoft Azure
 
